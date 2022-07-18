@@ -64,12 +64,20 @@ catch(error){
 const GetUrl = async function (req, res) {
     try{
   const paramCode = req.params.urlcode;
-  const longCheck = await urlModel.findOne({ urlcode: paramCode });
+  const longCheck = await urlModel.findOne({ urlCode: paramCode });
+  if (!longCheck) {
+    return res
+      .status(404)
+      .send({
+        status: false,
+        message: "Url is invalid"
+              });
+  }
   const resLogin = longCheck.longUrl;
   res.status(302).redirect(resLogin);
 }
 catch(error){
-    res.status(500).sand({status:false,error:error.message})
+    res.status(500).send({status:false,error:error.message})
 }}
 
 module.exports = { UrlShortner, GetUrl };
