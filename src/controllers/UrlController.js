@@ -45,6 +45,9 @@ const UrlShortner = async function (req, res) {
         .status(400)
         .send({ statua: false, message: "please enter a valid URL" });
     }
+   
+
+
 
     let cahcedProfileData = await GET_ASYNC(`${Urldata.longUrl}`);
     if (cahcedProfileData) {
@@ -73,6 +76,7 @@ const UrlShortner = async function (req, res) {
         });
       }
     }
+
     const urlgenerate = shortid.generate();
     const shortUrl = baseUrl + "/" + urlgenerate;
     Urldata.urlCode = urlgenerate;
@@ -90,6 +94,7 @@ const UrlShortner = async function (req, res) {
       message: "url shortnered susscessfully ",
       data: resdata,
     });
+
   } catch (error) {
     res.status(500).send({ status: false, error: error.message });
   }
@@ -113,7 +118,7 @@ const GetUrl = async function (req, res) {
     } else {
       await SET_ASYNC(`${paramCode}`, longCheck.longUrl, "EX", 20);
       const resLogin = longCheck.longUrl;
-      return res.status(302).redirect(resLogin); 
+      return res.redirect(302, resLogin); 
     }
   } catch (error) {
     res.status(500).send({ status: false, error: error.message });
